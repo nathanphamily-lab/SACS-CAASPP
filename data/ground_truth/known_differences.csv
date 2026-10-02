@@ -1,0 +1,3 @@
+year,function,ours_minus_filing,explanation
+2023-24,2000 Instruction-Related Services,1734265.00,"Object 5800 ($1,734,265.00): CDE's sacs2324.mdb codes it function 2700 (School Administration); LAUSD's filed ledger (DatExport.dat, column BA, submission E8AXU2W3J4) codes it 7200 (Other General Administration). Every other account and the total match exactly. The pipeline uses CDE's statewide file."
+2023-24,7000 General Administration,-1734265.00,"Same $1,734,265.00 object-5800 line as above, seen from the 7000 side."

@@ -1,0 +1,13 @@
+outcome,subject,kind_of_dollar,par_roi_per_1000,ci_low,ci_high,p_value
+level,ela,Federal,0.7001,-0.3163,1.7165,0.177
+level,ela,State & local,-0.6322,-0.849,-0.4153,0.0
+level,ela,All dollars,-0.4807,-0.6555,-0.306,0.0
+level,math,Federal,0.3509,-0.8859,1.5876,0.5782
+level,math,State & local,-0.4244,-0.6807,-0.1681,0.0012
+level,math,All dollars,-0.3363,-0.5293,-0.1433,0.0006
+growth,ela,Federal,0.43,-0.2626,1.1226,0.2236
+growth,ela,State & local,-0.1907,-0.3369,-0.0445,0.0106
+growth,ela,All dollars,-0.1198,-0.2427,0.0031,0.056
+growth,math,Federal,0.4631,-0.3997,1.3258,0.2928
+growth,math,State & local,-0.0801,-0.2488,0.0886,0.3521
+growth,math,All dollars,-0.0188,-0.1416,0.104,0.764

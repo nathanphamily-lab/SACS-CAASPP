@@ -1,0 +1,5 @@
+outcome,subject,n,r2_controls_only,r2_with_spending,residual_sd_pts
+level,ela,651,0.7475,0.7642,7.8889
+level,math,651,0.7441,0.7511,8.5808
+growth,ela,649,0.1887,0.1986,5.1487
+growth,math,649,0.132,0.1345,5.5071

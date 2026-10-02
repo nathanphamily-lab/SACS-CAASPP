@@ -1,0 +1,10 @@
+# Python 3.14; pinned to the versions the Phase 1 tests passed with (2026-10-01)
+access-parser==0.0.6
+jupyter==1.1.1
+numpy==2.5.3
+openpyxl==3.1.5
+pandas==3.0.6
+pypdf==6.19.0
+pytest==9.1.1
+requests==2.34.2
+statsmodels==0.15.0
