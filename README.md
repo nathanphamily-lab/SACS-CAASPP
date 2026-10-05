@@ -16,6 +16,8 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python src/ground_truth.py   # rebuild data/ground_truth/lausd_expected.csv
 .venv/bin/pytest -q                    # pipeline vs ground truth
 ```
+Webpage (LAUSD only for now): `docs/index.html`, a static page with a view filter. District trend and Kinds of dollars are built; School explorer and Method & caveats are next. Refresh its data with `.venv/bin/python src/export_web.py`, then open `docs/index.html` in a browser (it also works as-is on GitHub Pages from `docs/`).
+
 Notes: `notes/task2_identifiers.md` (identifiers and schema differences between years), `notes/sacs_viewer_api.md` (how filings are retrieved). Beyond Phase 1, the school-level returns model (`src/school_data.py`, `src/returns_model.py`) was built on request; see `notebooks/phase1b_returns.ipynb`.
 
 ## What "done" looks like for Phase 1

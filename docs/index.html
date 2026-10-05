@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAUSD Spending and Outcomes</title>
+<meta name="description" content="Los Angeles Unified: General Fund spending per student next to CAASPP test results, 2022-23 to 2024-25, from state SACS and CAASPP data.">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface-1: #fcfcfb;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #6f6d68;
+  --grid: #e1e0d9;
+  --baseline: #c3c2b7;
+  --border: rgba(11,11,11,0.10);
+  --accent: #2a78d6;
+  --good: #006300;
+  --bad: #b42d2d;
+  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a; --series-4: #eda100;
+  --series-5: #e87ba4; --series-6: #008300; --series-7: #4a3aa7;
+  --chip-on: #e8f0fb;
+  --tooltip: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface-1: #1a1a19; --text-primary: #ffffff; --text-secondary: #c3c2b7;
+    --text-muted: #9a9890; --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+    --accent: #3987e5; --good: #0ca30c; --bad: #e66767;
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+    --series-5: #d55181; --series-6: #008300; --series-7: #9085e9;
+    --chip-on: #1d2a3d; --tooltip: #262624;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface-1: #1a1a19; --text-primary: #ffffff; --text-secondary: #c3c2b7;
+  --text-muted: #9a9890; --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
+  --accent: #3987e5; --good: #0ca30c; --bad: #e66767;
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500;
+  --series-5: #d55181; --series-6: #008300; --series-7: #9085e9;
+  --chip-on: #1d2a3d; --tooltip: #262624;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--page); color: var(--text-primary);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
+header h1 { font-size: 28px; line-height: 1.2; margin: 0 0 6px; font-weight: 650; }
+header p { margin: 0; color: var(--text-secondary); max-width: 70ch; }
+
+/* filter row: one row above everything it scopes */
+.filters {
+  display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center;
+  margin: 24px 0 8px; padding: 12px 0; border-bottom: 1px solid var(--grid);
+  position: sticky; top: 0; background: var(--page); z-index: 5;
+}
+@media (max-width: 600px) { .filters { position: static; } }
+.filters .label { font-size: 13px; color: var(--text-secondary); margin-right: -6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font: inherit; font-size: 14px; padding: 5px 12px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface-1); color: var(--text-primary);
+}
+.chip[aria-pressed="true"] { background: var(--chip-on); border-color: var(--accent); }
+.chip[aria-pressed="true"]::before { content: "✓ "; font-weight: 700; }
+.chip:disabled { cursor: not-allowed; color: var(--text-muted); }
+.chip .soon { font-size: 11px; margin-left: 4px; color: var(--text-muted); }
+select {
+  font: inherit; font-size: 14px; padding: 5px 8px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--surface-1); color: var(--text-primary);
+}
+.chip:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+section.view { margin-top: 32px; }
+section.view[hidden] { display: none; }
+h2 { font-size: 20px; margin: 0 0 4px; font-weight: 650; }
+.lede { color: var(--text-secondary); margin: 0 0 16px; max-width: 75ch; }
+
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.tile .k { font-size: 13px; color: var(--text-secondary); }
+.tile .v { font-size: 28px; font-weight: 650; line-height: 1.25; }
+.tile .d { font-size: 13px; color: var(--text-secondary); }
+.tile .d .up { color: var(--good); font-weight: 600; }
+.tile .d .down { color: var(--bad); font-weight: 600; }
+
+.grid2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px; align-items: start; }
+@media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 16px; min-width: 0; margin-bottom: 12px; }
+.card h3 { font-size: 15px; margin: 0; font-weight: 600; }
+.card .sub { font-size: 13px; color: var(--text-secondary); margin: 2px 0 10px; }
+.chart { width: 100%; position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.axis text, .lbl { fill: var(--text-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.lbl.strong { fill: var(--text-primary); font-weight: 600; }
+.lbl.sec { fill: var(--text-secondary); }
+.mark { cursor: default; }
+.mark:hover, .mark:focus { opacity: 0.8; outline: none; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 10px 0 0; padding: 0; list-style: none; font-size: 13px; color: var(--text-secondary); }
+.legend li { display: flex; align-items: center; gap: 6px; }
+.legend .sw { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.legend .ln { width: 16px; height: 2px; border-radius: 1px; flex: none; }
+
+.tableToggle { font: inherit; font-size: 13px; margin-top: 10px; padding: 2px 0; border: 0; background: none; color: var(--accent); cursor: pointer; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 8px; }
+th, td { text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--text-secondary); font-weight: 600; }
+.tablewrap { overflow-x: auto; }
+
+.note { font-size: 13px; color: var(--text-secondary); background: var(--surface-1); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 10px 12px; margin: 0 0 12px; }
+.placeholder { color: var(--text-secondary); background: var(--surface-1); border: 1px dashed var(--baseline); border-radius: 12px; padding: 20px; }
+
+#tooltip {
+  position: fixed; pointer-events: none; z-index: 20; min-width: 160px; max-width: 280px;
+  background: var(--tooltip); color: var(--text-primary); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 10px; font-size: 13px; box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+#tooltip[hidden] { display: none; }
+#tooltip .tt-title { color: var(--text-secondary); margin-bottom: 4px; }
+#tooltip .row { display: flex; align-items: center; gap: 8px; }
+#tooltip .row .key { width: 12px; height: 2px; flex: none; border-radius: 1px; }
+#tooltip .row .val { font-weight: 650; font-variant-numeric: tabular-nums; }
+#tooltip .row .nm { color: var(--text-secondary); }
+
+footer { margin-top: 48px; font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--grid); padding-top: 16px; }
+footer p { margin: 0 0 8px; max-width: 80ch; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 id="title">LAUSD spending and outcomes</h1>
+    <p id="subtitle">General Fund spending per student next to state test results, from California's SACS financial data and CAASPP results.</p>
+  </header>
+
+  <div class="filters" role="group" aria-label="Choose what to view">
+    <span class="label">Show</span>
+    <div class="chips" id="chips"></div>
+    <span class="label" style="margin-left:8px">Kinds of dollars year</span>
+    <select id="year" aria-label="Year for kinds of dollars"></select>
+  </div>
+
+  <section class="view" id="view-trend" aria-labelledby="h-trend">
+    <h2 id="h-trend">District trend</h2>
+    <p class="lede">How much LAUSD spent per student on day-to-day operations each year, by what the money was used for, alongside the share of students meeting state standards.</p>
+    <div class="kpis" id="kpis"></div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Spending per student, by function</h3>
+        <p class="sub">General Fund operating spending ÷ average daily attendance (ADA)</p>
+        <div class="chart" id="chart-spend"></div>
+        <ul class="legend" id="legend-spend"></ul>
+        <button class="tableToggle" data-table="table-spend" aria-expanded="false">Show table</button>
+        <div class="tablewrap" id="table-spend" hidden></div>
+      </div>
+      <div class="card">
+        <h3>Students meeting or exceeding standards</h3>
+        <p class="sub">CAASPP Smarter Balanced, all students, all tested grades</p>
+        <div class="chart" id="chart-scores"></div>
+        <ul class="legend" id="legend-scores"></ul>
+        <button class="tableToggle" data-table="table-scores" aria-expanded="false">Show table</button>
+        <div class="tablewrap" id="table-scores" hidden></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="view-dollars" aria-labelledby="h-dollars">
+    <h2 id="h-dollars">Kinds of dollars</h2>
+    <p class="lede">Where the General Fund money comes from, and which kinds of dollars pay for which functions. "Kind" is the funding source's restriction, from the SACS resource code.</p>
+    <p class="note" id="dollars-note"></p>
+    <div class="card">
+      <h3 id="h-kinds">Operating spending by kind of dollar</h3>
+      <p class="sub">Stacked by function; same colors as the trend chart</p>
+      <div class="chart" id="chart-kinds"></div>
+      <ul class="legend" id="legend-kinds"></ul>
+      <button class="tableToggle" data-table="table-kinds" aria-expanded="false">Show table</button>
+      <div class="tablewrap" id="table-kinds" hidden></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3 id="h-rev">General Fund revenue by source</h3>
+        <p class="sub">SACS revenue objects 8010–8799</p>
+        <div class="chart" id="chart-rev"></div>
+        <button class="tableToggle" data-table="table-rev" aria-expanded="false">Show table</button>
+        <div class="tablewrap" id="table-rev" hidden></div>
+      </div>
+      <div class="card">
+        <h3 id="h-top">Largest funding sources (resources)</h3>
+        <p class="sub">Operating spending by SACS resource code</p>
+        <div class="tablewrap" id="table-top"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="view-schools" aria-labelledby="h-schools" hidden>
+    <h2 id="h-schools">School explorer</h2>
+    <p class="placeholder">Coming soon: LAUSD schools with below-par / par / above-par bands and a level/growth switch.</p>
+  </section>
+  <section class="view" id="view-method" aria-labelledby="h-method" hidden>
+    <h2 id="h-method">Method &amp; caveats</h2>
+    <p class="placeholder">Coming soon: data sources, how each number was checked, and how to read the results.</p>
+  </section>
+
+  <footer id="footer"></footer>
+</div>
+<div id="tooltip" role="tooltip" hidden></div>
+
+<script src="data/19647330000000.js"></script>
+<script>
+(function () {
+  "use strict";
+  const D = window.MAIA_DATA;
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const fmt$ = v => "$" + Math.round(v).toLocaleString("en-US");
+  const fmtM = v => v >= 1e9 ? "$" + (v / 1e9).toFixed(2) + "B" : "$" + Math.round(v / 1e6).toLocaleString("en-US") + "M";
+  const fmtPct = v => v == null ? "n/a" : v.toFixed(2) + "%";
+  const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const seriesColor = i => css("--series-" + (i + 1));
+  const FN = D.function_series;
+
+  // ---------- view filter (persisted per viewer; page works without storage) ----------
+  const VIEWS = [
+    { key: "trend", label: "District trend", ready: true },
+    { key: "dollars", label: "Kinds of dollars", ready: true },
+    { key: "schools", label: "School explorer", ready: false },
+    { key: "method", label: "Method & caveats", ready: false },
+  ];
+  const STORE = "maia-views-v1";
+  let shown;
+  try { shown = JSON.parse(localStorage.getItem(STORE)); } catch (e) { shown = null; }
+  if (!shown || typeof shown !== "object") shown = { trend: true, dollars: true };
+
+  const chips = document.getElementById("chips");
+  VIEWS.forEach(v => {
+    const b = document.createElement("button");
+    b.className = "chip"; b.type = "button";
+    b.textContent = v.label;
+    if (!v.ready) {
+      b.disabled = true; b.setAttribute("aria-pressed", "false");
+      const s = document.createElement("span"); s.className = "soon"; s.textContent = "soon"; b.appendChild(s);
+    } else {
+      b.setAttribute("aria-pressed", String(!!shown[v.key]));
+      b.addEventListener("click", () => {
+        shown[v.key] = !shown[v.key];
+        b.setAttribute("aria-pressed", String(shown[v.key]));
+        try { localStorage.setItem(STORE, JSON.stringify(shown)); } catch (e) {}
+        applyViews();
+      });
+    }
+    chips.appendChild(b);
+  });
+  function applyViews() {
+    VIEWS.filter(v => v.ready).forEach(v => { document.getElementById("view-" + v.key).hidden = !shown[v.key]; });
+    renderAll();
+  }
+
+  const yearSel = document.getElementById("year");
+  D.dollars.forEach(d => { const o = document.createElement("option"); o.value = d.year; o.textContent = d.year; yearSel.appendChild(o); });
+  yearSel.value = D.dollars[D.dollars.length - 1].year;
+  yearSel.addEventListener("change", renderDollars);
+
+  // ---------- tooltip ----------
+  const tip = document.getElementById("tooltip");
+  function showTip(evt, title, rows) {
+    tip.replaceChildren();
+    const t = document.createElement("div"); t.className = "tt-title"; t.textContent = title; tip.appendChild(t);
+    rows.forEach(r => {
+      const row = document.createElement("div"); row.className = "row";
+      if (r.color) { const k = document.createElement("span"); k.className = "key"; k.style.background = r.color; row.appendChild(k); }
+      const v = document.createElement("span"); v.className = "val"; v.textContent = r.value; row.appendChild(v);
+      const n = document.createElement("span"); n.className = "nm"; n.textContent = r.name; row.appendChild(n);
+      tip.appendChild(row);
+    });
+    tip.hidden = false;
+    let x, y;
+    if (evt.type === "focus") { const b = evt.target.getBoundingClientRect(); x = b.right; y = b.top; }
+    else { x = evt.clientX; y = evt.clientY; }
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.min(x + 14, window.innerWidth - w - 8) + "px";
+    tip.style.top = Math.max(8, Math.min(y - h - 10, window.innerHeight - h - 8)) + "px";
+  }
+  const hideTip = () => { tip.hidden = true; };
+
+  // ---------- svg helpers ----------
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS(SVGNS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function text(parent, x, y, str, cls, anchor) {
+    const t = el("text", { x, y, class: cls || "lbl", "text-anchor": anchor || "start" }, parent);
+    t.textContent = str; return t;
+  }
+  // bar with 4px rounded data-end, square at the baseline
+  function barPath(x, y, w, h, dir) {
+    const r = Math.min(4, w / 2, h);
+    if (h <= 0 || w <= 0) return "";
+    if (dir === "up") return `M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z`;
+    // right-pointing
+    return `M${x},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h - r}Q${x + w},${y + h} ${x + w - r},${y + h}H${x}Z`;
+  }
+  function niceMax(v, step) { return Math.ceil(v / step) * step; }
+  function attachTip(node, title, rows) {
+    node.setAttribute("tabindex", "0");
+    node.setAttribute("aria-label", title + ": " + rows.map(r => r.name + " " + r.value).join(", "));
+    node.addEventListener("pointermove", e => showTip(e, title, rows));
+    node.addEventListener("pointerleave", hideTip);
+    node.addEventListener("focus", e => showTip(e, title, rows));
+    node.addEventListener("blur", hideTip);
+  }
+  function legend(ul, items, kind) {
+    ul.replaceChildren();
+    items.forEach(it => {
+      const li = document.createElement("li");
+      const s = document.createElement("span"); s.className = kind === "line" ? "ln" : "sw"; s.style.background = it.color;
+      li.appendChild(s); li.appendChild(document.createTextNode(it.label)); ul.appendChild(li);
+    });
+  }
+  function table(container, head, rows) {
+    const t = document.createElement("table");
+    const thead = t.createTHead().insertRow();
+    head.forEach(h => { const th = document.createElement("th"); th.textContent = h; thead.appendChild(th); });
+    const tb = t.createTBody();
+    rows.forEach(r => { const tr = tb.insertRow(); r.forEach(c => { const td = tr.insertCell(); td.textContent = c; }); });
+    container.replaceChildren(t);
+  }
+  document.querySelectorAll(".tableToggle").forEach(b => b.addEventListener("click", () => {
+    const t = document.getElementById(b.dataset.table);
+    t.hidden = !t.hidden; b.setAttribute("aria-expanded", String(!t.hidden));
+    b.textContent = t.hidden ? "Show table" : "Hide table";
+  }));
+
+  // ---------- section 1: district trend ----------
+  function kpis() {
+    const first = D.trend[0], last = D.trend[D.trend.length - 1];
+    const box = document.getElementById("kpis"); box.replaceChildren();
+    const tile = (k, v, deltaTxt, dir) => {
+      const d = document.createElement("div"); d.className = "tile";
+      const a = document.createElement("div"); a.className = "k"; a.textContent = k;
+      const b = document.createElement("div"); b.className = "v"; b.textContent = v;
+      d.append(a, b);
+      if (deltaTxt) {
+        const c = document.createElement("div"); c.className = "d";
+        const s = document.createElement("span"); s.className = dir; s.textContent = deltaTxt;
+        c.append(s, document.createTextNode(" since " + first.year)); d.appendChild(c);
+      }
+      box.appendChild(d);
+    };
+    const pct = (a, b) => ((b - a) / a * 100);
+    const sp = pct(first.spend_per_ada, last.spend_per_ada);
+    tile("Spending per student, " + last.year, fmt$(last.spend_per_ada), (sp >= 0 ? "+" : "") + sp.toFixed(0) + "%", "");
+    tile("ELA met or exceeded, " + last.year, fmtPct(last.ela), (last.ela - first.ela >= 0 ? "▲ +" : "▼ ") + (last.ela - first.ela).toFixed(1) + " pts", last.ela >= first.ela ? "up" : "down");
+    tile("Math met or exceeded, " + last.year, fmtPct(last.math), (last.math - first.math >= 0 ? "▲ +" : "▼ ") + (last.math - first.math).toFixed(1) + " pts", last.math >= first.math ? "up" : "down");
+    tile("Average daily attendance, " + last.year, Math.round(last.ada).toLocaleString("en-US"), (pct(first.ada, last.ada)).toFixed(0) + "%", "");
+  }
+
+  function spendChart() {
+    const box = document.getElementById("chart-spend"); box.replaceChildren();
+    const W = Math.max(300, box.clientWidth), H = 300, m = { t: 22, r: 8, b: 26, l: 56 };
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Stacked columns of spending per student by function for each year" }, box);
+    const max = niceMax(Math.max(...D.trend.map(t => t.spend_per_ada)), 5000);
+    const y = v => m.t + (H - m.t - m.b) * (1 - v / max);
+    const ax = el("g", { class: "axis" }, svg);
+    for (let v = 0; v <= max; v += 5000) {
+      el("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? css("--baseline") : css("--grid"), "stroke-width": 1 }, ax);
+      text(ax, m.l - 8, y(v) + 4, "$" + (v / 1000) + "k", "lbl", "end");
+    }
+    const band = (W - m.l - m.r) / D.trend.length, bw = Math.min(56, band * 0.5);
+    D.trend.forEach((t, i) => {
+      const cx = m.l + band * i + band / 2, x0 = cx - bw / 2;
+      let acc = 0;
+      FN.forEach((f, j) => {
+        const v = t.per_ada_by_function[f.key] || 0;
+        if (v <= 0) return;
+        const y1 = y(acc + v), y0 = y(acc);
+        const isTop = j === FN.length - 1 || FN.slice(j + 1).every(g => (t.per_ada_by_function[g.key] || 0) <= 0);
+        const h = Math.max(0, y0 - y1 - (acc > 0 ? 2 : 0)); // 2px surface gap between segments
+        const p = isTop ? barPath(x0, y1, bw, h, "up") : `M${x0},${y1}h${bw}v${h}h${-bw}Z`;
+        const seg = el("path", { d: p, fill: seriesColor(j), class: "mark" }, svg);
+        attachTip(seg, t.year, [{ color: seriesColor(j), value: fmt$(v), name: f.label },
+                               { value: fmt$(t.spend_per_ada), name: "Total per student" }]);
+        acc += v;
+      });
+      text(svg, cx, y(t.spend_per_ada) - 6, fmt$(t.spend_per_ada), "lbl strong", "middle");
+      text(svg, cx, H - 6, t.year, "lbl sec", "middle");
+    });
+    legend(document.getElementById("legend-spend"), FN.map((f, j) => ({ label: f.label, color: seriesColor(j) })), "rect");
+    table(document.getElementById("table-spend"), ["Function", ...D.trend.map(t => t.year)],
+      [...FN.map(f => [f.label, ...D.trend.map(t => fmt$(t.per_ada_by_function[f.key] || 0))]),
+       ["Total per student", ...D.trend.map(t => fmt$(t.spend_per_ada))],
+       ["Total spending", ...D.trend.map(t => fmtM(t.spend_total))],
+       ["Average daily attendance", ...D.trend.map(t => Math.round(t.ada).toLocaleString("en-US"))]]);
+  }
+
+  function scoresChart() {
+    const box = document.getElementById("chart-scores"); box.replaceChildren();
+    const W = Math.max(280, box.clientWidth), H = 300, m = { t: 22, r: 84, b: 26, l: 40 };
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Lines of ELA and math percent meeting standards by year" }, box);
+    const series = [{ key: "ela", label: "ELA", color: seriesColor(0) }, { key: "math", label: "Math", color: seriesColor(1) }];
+    const max = 60;
+    const y = v => m.t + (H - m.t - m.b) * (1 - v / max);
+    const n = D.trend.length;
+    const x = i => m.l + (W - m.l - m.r) * (n === 1 ? 0.5 : i / (n - 1));
+    const ax = el("g", { class: "axis" }, svg);
+    for (let v = 0; v <= max; v += 20) {
+      el("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? css("--baseline") : css("--grid"), "stroke-width": 1 }, ax);
+      text(ax, m.l - 8, y(v) + 4, v + "%", "lbl", "end");
+    }
+    D.trend.forEach((t, i) => text(svg, x(i), H - 6, t.year, "lbl sec", "middle"));
+    series.forEach(s => {
+      const pts = D.trend.map((t, i) => t[s.key] == null ? null : [x(i), y(t[s.key])]).filter(Boolean);
+      el("path", { d: "M" + pts.map(p => p.join(",")).join("L"), fill: "none", stroke: s.color, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+      pts.forEach(p => el("circle", { cx: p[0], cy: p[1], r: 4, fill: s.color, stroke: css("--surface-1"), "stroke-width": 2 }, svg));
+      const last = D.trend[n - 1];
+      text(svg, x(n - 1) + 10, y(last[s.key]) + 4, s.label + " " + fmtPct(last[s.key]), "lbl strong");
+    });
+    // crosshair: one hit column per year, tooltip lists every series
+    const cross = el("line", { y1: m.t, y2: H - m.b, stroke: css("--baseline"), "stroke-width": 1, visibility: "hidden" }, svg);
+    D.trend.forEach((t, i) => {
+      const half = (W - m.l - m.r) / Math.max(1, n - 1) / 2;
+      const hit = el("rect", { x: Math.max(m.l - 10, x(i) - half), y: m.t, width: Math.min(half * 2, W), height: H - m.t - m.b, fill: "transparent", class: "mark" }, svg);
+      const rows = series.map(s => ({ color: s.color, value: fmtPct(t[s.key]), name: s.label }));
+      attachTip(hit, t.year, rows);
+      hit.addEventListener("pointerenter", () => { cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible"); });
+      hit.addEventListener("pointerleave", () => cross.setAttribute("visibility", "hidden"));
+    });
+    legend(document.getElementById("legend-scores"), series.map(s => ({ label: s.label, color: s.color })), "line");
+    table(document.getElementById("table-scores"), ["Year", "ELA", "Math"], D.trend.map(t => [t.year, fmtPct(t.ela), fmtPct(t.math)]));
+  }
+
+  // ---------- section 2: kinds of dollars ----------
+  function hbarChart(boxId, rows, opts) {
+    // rows: [{label, total, segments?: [{value, color, name}]}]
+    const box = document.getElementById(boxId); box.replaceChildren();
+    const W = Math.max(280, box.clientWidth);
+    const narrow = W < 560;
+    const labelW = narrow ? 0 : opts.labelW;
+    const rowH = narrow ? 50 : 34, barH = Math.min(22, rowH - 12);
+    const m = { t: 6, r: 74, b: 22, l: labelW };
+    const H = m.t + m.b + rowH * rows.length;
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": opts.aria }, box);
+    const max = Math.max(...rows.map(r => r.total));
+    const step = max > 4e9 ? 1e9 : max > 1e9 ? 5e8 : 1e8;
+    const top = niceMax(max, step);
+    const x = v => m.l + (W - m.l - m.r) * (v / top);
+    const ax = el("g", { class: "axis" }, svg);
+    for (let v = 0; v <= top; v += step) {
+      el("line", { x1: x(v), x2: x(v), y1: m.t, y2: H - m.b, stroke: v === 0 ? css("--baseline") : css("--grid"), "stroke-width": 1 }, ax);
+      text(ax, x(v), H - 6, v === 0 ? "$0" : fmtM(v).replace(".00B", "B"), "lbl", v === 0 ? "start" : "middle");
+    }
+    rows.forEach((r, i) => {
+      const yTop = m.t + rowH * i + (narrow ? 18 : (rowH - barH) / 2);
+      if (narrow) text(svg, 0, m.t + rowH * i + 13, r.label, "lbl sec");
+      else text(svg, labelW - 10, yTop + barH / 2 + 4, r.label, "lbl sec", "end");
+      const segs = r.segments || [{ value: r.total, color: seriesColor(0), name: r.label }];
+      let acc = 0;
+      const live = segs.filter(s => s.value > 0);
+      live.forEach((s, j) => {
+        const x0 = x(acc) + (acc > 0 ? 2 : 0), x1 = x(acc + s.value);
+        const w = Math.max(0, x1 - x0);
+        const p = j === live.length - 1 ? barPath(x0, yTop, w, barH, "right") : `M${x0},${yTop}h${w}v${barH}h${-w}Z`;
+        const seg = el("path", { d: p, fill: s.color, class: "mark" }, svg);
+        attachTip(seg, r.label, [{ color: s.color, value: fmtM(s.value), name: s.name },
+                                 { value: fmtM(r.total), name: "Total" + (opts.ada ? " · " + fmt$(r.total / opts.ada) + " per student" : "") }]);
+        acc += s.value;
+      });
+      text(svg, x(r.total) + 6, yTop + barH / 2 + 4, fmtM(r.total), "lbl strong");
+    });
+  }
+
+  function renderDollars() {
+    const d = D.dollars.find(x => x.year === yearSel.value);
+    const all = D.dollars;
+    // note: factual year-over-year context for the federal line
+    const fed = all.map(y => ({ year: y.year, v: (y.kinds.find(k => k.kind === "Federal") || {}).total || 0, relief: y.federal_relief, lr: y.state_learning_recovery }));
+    const a = fed[0], z = fed[fed.length - 1];
+    let note = "Federal operating dollars went from " + fmtM(a.v) + " in " + a.year + " to " + fmtM(z.v) + " in " + z.year +
+      ". Most of that is one-time federal pandemic relief (ESSER, GEER, American Rescue Plan) ending: " +
+      fmtM(a.relief) + " in " + a.year + ", " + fmtM(z.relief) + " in " + z.year + ".";
+    if (z.lr > 1e6) note += " A one-time state Learning Recovery Emergency Block Grant added " + fmtM(z.lr) + " in " + z.year + ".";
+    document.getElementById("dollars-note").textContent = note;
+    document.getElementById("h-kinds").textContent = "Operating spending by kind of dollar, " + d.year;
+    document.getElementById("h-rev").textContent = "General Fund revenue by source, " + d.year;
+    document.getElementById("h-top").textContent = "Largest funding sources, " + d.year;
+
+    hbarChart("chart-kinds", d.kinds.map(k => ({
+      label: k.label.replace(/ \(.*\)$/, ""), total: k.total,
+      segments: FN.map((f, j) => ({ value: k.by_function[f.key] || 0, color: seriesColor(j), name: f.label })),
+    })), { labelW: 210, ada: d.ada, aria: "Stacked bars of spending by kind of dollar, split by function" });
+    legend(document.getElementById("legend-kinds"), FN.map((f, j) => ({ label: f.label, color: seriesColor(j) })), "rect");
+    table(document.getElementById("table-kinds"), ["Kind of dollar", ...FN.map(f => f.label), "Total", "Per student"],
+      d.kinds.map(k => [k.label, ...FN.map(f => fmtM(k.by_function[f.key] || 0)), fmtM(k.total), fmt$(k.total / d.ada)]));
+
+    hbarChart("chart-rev", d.revenues.map(r => ({ label: r.source, total: r.amount })), { labelW: 150, aria: "Bars of General Fund revenue by source" });
+    table(document.getElementById("table-rev"), ["Source", "Amount", "Per student"], d.revenues.map(r => [r.source, fmtM(r.amount), fmt$(r.amount / d.ada)]));
+
+    table(document.getElementById("table-top"), ["Resource", "Kind", "Amount"],
+      d.top_resources.map(r => [r.code + " · " + r.title, r.kind, fmtM(r.amount)]));
+  }
+
+  // ---------- footer ----------
+  function footer() {
+    const f = document.getElementById("footer"); f.replaceChildren();
+    const p = s => { const e = document.createElement("p"); e.textContent = s; f.appendChild(e); };
+    p("Spending: General Fund (Fund 01) operating expenditures (objects 1000–5999 and 7300–7399) from CDE's SACS unaudited actuals, checked to the cent against " + D.district + "'s board-approved filings. Per student = spending ÷ average daily attendance, including charter schools reported in the district's General Fund.");
+    p("Scores: CAASPP Smarter Balanced, percent of students meeting or exceeding the standard, all students and all tested grades.");
+    p("This page shows where money goes and how results moved; it does not show that any dollar caused any result, and it is not an allegation of wrongdoing. Data prepared " + D.generated + ".");
+  }
+
+  function renderAll() {
+    hideTip();
+    if (shown.trend) { kpis(); spendChart(); scoresChart(); }
+    if (shown.dollars) renderDollars();
+  }
+
+  document.getElementById("title").textContent = D.district + " spending and outcomes";
+  footer();
+  applyViews();
+  let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(renderAll, 120); });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+})();
+</script>
+</body>
+</html>

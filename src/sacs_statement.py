@@ -55,11 +55,11 @@ def spending_matrix(gl: pd.DataFrame) -> pd.DataFrame:
     return m
 
 
-def top_resources(gl: pd.DataFrame, n: int = 12) -> pd.DataFrame:
+def top_resources(gl: pd.DataFrame, n: int = 12, fiscal: str = "2425") -> pd.DataFrame:
     sel = gl[sacs_parser.in_scope(gl)]
     out = sel.groupby("Resource")["Value"].sum().map(float).sort_values(ascending=False).head(n)
     out = out.rename("amount").reset_index()
-    titles = sacs_parser.code_titles("Resource")
+    titles = sacs_parser.code_titles("Resource", fiscal)
     out.insert(1, "title", out["Resource"].map(titles))
     out.insert(2, "kind", kind_of_dollar(out["Resource"]))
     return out
