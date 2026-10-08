@@ -106,6 +106,93 @@ def build(cds: CDS, years: list[str]) -> pd.DataFrame:
     return table
 
 
+TYPE_SUFFIXES = (" elementary", " unified", " union high", " high")
+
+
+def _norm(name: str | None) -> str:
+    """Compare names without case/spacing and without a trailing district-type word: SACS
+    names some elementary districts 'Lennox Elementary' where CDE's directory says 'Lennox'
+    (and CAASPP did the same for Whittier City in 2023). The CDS codes already match; this
+    only stops cosmetic suffixes from being flagged as name_mismatch."""
+    n = " ".join((name or "").lower().split())
+    for suf in TYPE_SUFFIXES:
+        if n.endswith(suf):
+            return n[: -len(suf)]
+    return n
+
+
+def build_many(districts: pd.DataFrame, years: list[str]) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Phase 2: the Phase 1 table for many districts at once, one combined frame.
+
+    `districts` has columns cds, district_name, district_type (data/reference/la_county_districts.csv).
+    Each district/year is attempted independently: a failure is recorded in the run log and
+    flagged in the table, and never stops the run. Returns (table, run_log).
+
+    data_quality_flag lists every issue for that district/year (';'-separated), or 'ok':
+      missing_sacs / missing_caaspp  - the year is absent from one source
+      ela_suppressed / math_suppressed - CAASPP row present, score withheld (small n)
+      ela_no_record / math_no_record   - no CAASPP row for the district that year
+      ada_zero                         - no ADA, so no per-pupil figure
+      name_mismatch                    - SACS or CAASPP names the district differently
+    Scores that aren't available are null, never 0.
+    """
+    tables, log = [], []
+    for d in districts.itertuples(index=False):
+        cds = CDS.parse(d.cds)
+        spend, scores, status, names = {}, {}, {}, {}
+        for y in years:
+            fiscal, test_year = year_codes(y)
+            try:
+                spend[y] = sacs_year(cds, y)
+                log.append({"cds": d.cds, "year": y, "step": "sacs", "ok": spend[y] is not None,
+                            "error": "" if spend[y] is not None else f"no sacs{fiscal}.mdb"})
+            except Exception as e:  # noqa: BLE001 - recorded, run continues
+                spend[y] = None
+                log.append({"cds": d.cds, "year": y, "step": "sacs", "ok": False, "error": f"{type(e).__name__}: {e}"})
+            try:
+                if not (caaspp_parser.RAW / "caaspp" / f"sb_ca{test_year}_1_csv_v1.txt").exists():
+                    raise FileNotFoundError(f"no CAASPP {test_year} file")
+                detail = caaspp_parser.proficiency_detail(cds, test_year)
+                status[y] = {subj: st for subj, (_, st) in detail.items()}
+                if all(st == "no_record" for st in status[y].values()):
+                    scores[y] = None
+                else:
+                    scores[y] = {f"{subj}_pct_met_or_exceeded": v for subj, (v, _) in detail.items()}
+                try:
+                    names[y] = caaspp_entity(cds, test_year)["District Name"]
+                except LookupError:
+                    names[y] = None
+                log.append({"cds": d.cds, "year": y, "step": "caaspp", "ok": scores[y] is not None,
+                            "error": "" if scores[y] is not None else "no CAASPP rows for district"})
+            except Exception as e:  # noqa: BLE001
+                scores[y] = None
+                status[y] = {"ela": "no_record", "math": "no_record"}
+                log.append({"cds": d.cds, "year": y, "step": "caaspp", "ok": False, "error": f"{type(e).__name__}: {e}"})
+
+        t = combine(d.district_name, spend, scores)
+        t.insert(1, "cds", d.cds)
+        t.insert(2, "district_type", d.district_type)
+        t.loc[~(t["ada"] > 0), "spend_per_pupil"] = np.nan
+
+        def flags(row) -> str:
+            y = row["year"]
+            out = [] if row["data_status"] == "both" else [row["data_status"]]
+            for subj in ("ela", "math"):
+                st = status.get(y, {}).get(subj, "no_record")
+                if st != "ok" and row["data_status"] != "missing_caaspp":
+                    out.append(f"{subj}_{st}")
+            if row["data_status"] != "missing_sacs" and not row["ada"] > 0:
+                out.append("ada_zero")
+            sacs_name = spend[y]["sacs_name"].iloc[0] if spend.get(y) is not None else None
+            if any(n is not None and _norm(n) != _norm(d.district_name) for n in (sacs_name, names.get(y))):
+                out.append("name_mismatch")
+            return ";".join(out) or "ok"
+
+        t["data_quality_flag"] = t.apply(flags, axis=1)
+        tables.append(t)
+    return pd.concat(tables, ignore_index=True), pd.DataFrame(log)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--cds", default="19647330000000")

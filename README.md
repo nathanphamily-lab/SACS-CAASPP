@@ -6,14 +6,16 @@ Companion to `maia_spending_outcomes_spec.md` (read that first for the "why"). T
 **Phase 0/1**: prove the SACS-to-CAASPP join works for a single district (start with LAUSD, CDS code `19647330000000`), then generalize to a script that takes any CDS code.
 
 ## Status (2026-10-02)
-Phase 1 is **done** for LAUSD, 2022-23 → 2024-25, per `PHASE1_TASKS.md`. `pytest` passes 47 of 47. See `notes/phase1_signoff.md`.
+Phase 1 (LAUSD) and Phase 2 (all 79 LA County districts), 2022-23 → 2024-25, are **done**. `pytest` passes 114 of 114. See `notes/phase1_signoff.md` and `notes/phase2_signoff.md`.
 
 ```
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python src/join.py --cds 19647330000000 --years 2022-23:2024-25   # the Phase 1 table
 .venv/bin/python src/sacs_viewer.py list 19647330000000 2022-23 2023-24 2024-25   # find LAUSD's filings
 .venv/bin/python src/sacs_viewer.py ingest 19647330000000                         # file the downloaded ZIPs
-.venv/bin/python src/ground_truth.py   # rebuild data/ground_truth/lausd_expected.csv
+.venv/bin/python src/ground_truth.py   # rebuild data/ground_truth/expected.csv from data/raw/filings/<cds>/
+.venv/bin/python src/la_county.py      # Phase 2: the 79-district list
+.venv/bin/python src/run_county.py     # Phase 2: data/processed/la_county_2223-2425.csv + logs
 .venv/bin/pytest -q                    # pipeline vs ground truth
 ```
 Webpage (LAUSD only for now): `docs/index.html`, a static page with a view filter. District trend and Kinds of dollars are built; School explorer and Method & caveats are next. Refresh its data with `.venv/bin/python src/export_web.py`, then open `docs/index.html` in a browser (it also works as-is on GitHub Pages from `docs/`).

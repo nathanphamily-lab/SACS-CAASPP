@@ -11,6 +11,7 @@ All three use native CDS components, so no crosswalk table is needed.
 Re-verify this for every new year added.
 """
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 
 import pandas as pd
@@ -41,11 +42,22 @@ class CDS:
         return self.school == DISTRICT_SCHOOL_CODE
 
 
-def directory_record(cds: CDS) -> dict:
+@lru_cache(maxsize=None)
+def directory() -> pd.DataFrame:
     """CDE public districts directory (cde.ca.gov/ds/si/ds/pubschls.asp, "Public Districts"
     TXT). Districts are keyed by the 7-digit 'CD Code' = county (2) + district (5)."""
-    path = RAW / "cde" / "pubdistricts.txt"
-    d = pd.read_csv(path, sep="\t", dtype=str, keep_default_na=False, encoding="utf-8")
+    return pd.read_csv(RAW / "cde" / "pubdistricts.txt", sep="\t", dtype=str,
+                       keep_default_na=False, encoding="utf-8")
+
+
+@lru_cache(maxsize=None)
+def caaspp_entities(year: str) -> pd.DataFrame:
+    return pd.read_csv(RAW / "caaspp" / f"sb_ca{year}entities_csv.txt", sep="^", dtype=str,
+                       keep_default_na=False, encoding="latin-1")
+
+
+def directory_record(cds: CDS) -> dict:
+    d = directory()
     hit = d[d["CD Code"] == cds.county + cds.district]
     if len(hit) != 1:
         raise LookupError(f"Expected 1 directory record for {cds.county}{cds.district}, found {len(hit)}")
@@ -54,8 +66,7 @@ def directory_record(cds: CDS) -> dict:
 
 def caaspp_entity(cds: CDS, year: str = "2025") -> dict:
     """Return the CAASPP entities-file record for one CDS code (names, type)."""
-    path = RAW / "caaspp" / f"sb_ca{year}entities_csv.txt"
-    ent = pd.read_csv(path, sep="^", dtype=str, keep_default_na=False, encoding="latin-1")
+    ent = caaspp_entities(year)
     hit = ent[
         (ent["County Code"] == cds.county)
         & (ent["District Code"] == cds.district)
@@ -64,3 +75,19 @@ def caaspp_entity(cds: CDS, year: str = "2025") -> dict:
     if len(hit) != 1:
         raise LookupError(f"Expected 1 CAASPP entity for {cds.code}, found {len(hit)}")
     return hit.iloc[0].to_dict()
+
+
+def resolve(cds: CDS, sacs_fiscal: str, caaspp_year: str) -> dict:
+    """Resolve one district in every source for one year. Never raises: each source's result
+    is the record found or an error message, so a caller can log partial matches."""
+    import sacs_parser  # local import: sacs_parser imports this module
+    out = {"cds": cds.code}
+    for name, fn in [("directory", lambda: directory_record(cds)["District"]),
+                     ("sacs", lambda: sacs_parser.lea(cds, sacs_fiscal)["district_name"]),
+                     ("caaspp", lambda: caaspp_entity(cds, caaspp_year)["District Name"])]:
+        try:
+            out[name] = fn()
+        except Exception as e:  # noqa: BLE001 - logged, not swallowed
+            out[name] = None
+            out[f"{name}_error"] = f"{type(e).__name__}: {e}"
+    return out

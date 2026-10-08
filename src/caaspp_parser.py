@@ -4,6 +4,7 @@ Input: the caret-delimited "All Students" statewide file (sb_ca{YYYY}_1_csv_v1.t
 from caaspp-elpac.ets.org research files. YYYY is the spring test year,
 so the 2024-25 school year is 2025.
 """
+from functools import lru_cache
 from pathlib import Path
 
 import pandas as pd
@@ -24,21 +25,35 @@ def to_pct(value: str) -> float | None:
         return None
 
 
-def proficiency(cds: CDS, test_year: str = "2025") -> dict:
+@lru_cache(maxsize=None)
+def _district_rows(test_year: str) -> pd.DataFrame:
+    """All-students, all-grades rows for every entity in one year's file (read once)."""
     path = RAW / "caaspp" / f"sb_ca{test_year}_1_csv_v1.txt"
     df = pd.read_csv(path, sep="^", dtype=str, keep_default_na=False, encoding="latin-1")
-    rows = df[
-        (df["County Code"] == cds.county)
-        & (df["District Code"] == cds.district)
-        & (df["School Code"] == cds.school)
-        & (df["Student Group ID"] == ALL_STUDENTS)
-        & (df["Grade"] == ALL_GRADES)
-        & (df["Test ID"].isin(TEST_IDS))
-    ]
-    out = {f"{name}_pct_met_or_exceeded": None for name in TEST_IDS.values()}
-    for _, r in rows.iterrows():
-        out[f"{TEST_IDS[r['Test ID']]}_pct_met_or_exceeded"] = to_pct(r[PCT_COL])
+    return df[(df["Student Group ID"] == ALL_STUDENTS) & (df["Grade"] == ALL_GRADES)
+              & df["Test ID"].isin(TEST_IDS)]
+
+
+def proficiency_detail(cds: CDS, test_year: str = "2025") -> dict:
+    """{subject: (pct or None, status)} where status is 'ok', 'suppressed' (row present,
+    value withheld for small n, e.g. '*'), or 'no_record' (no row for this entity)."""
+    df = _district_rows(test_year)
+    rows = df[(df["County Code"] == cds.county) & (df["District Code"] == cds.district)
+              & (df["School Code"] == cds.school)]
+    out = {}
+    for tid, name in TEST_IDS.items():
+        r = rows[rows["Test ID"] == tid]
+        if r.empty:
+            out[name] = (None, "no_record")
+        else:
+            v = to_pct(r.iloc[0][PCT_COL])
+            out[name] = (v, "ok" if v is not None else "suppressed")
     return out
+
+
+def proficiency(cds: CDS, test_year: str = "2025") -> dict:
+    detail = proficiency_detail(cds, test_year)
+    return {f"{name}_pct_met_or_exceeded": detail[name][0] for name in TEST_IDS.values()}
 
 
 if __name__ == "__main__":

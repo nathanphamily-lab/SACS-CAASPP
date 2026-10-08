@@ -91,8 +91,11 @@ def download_all_artifact(cds: CDS, fiscal_year: str, period: str = "A") -> dict
                                 "reportingPeriod", "submissionNumber")} | {"what": "all files (ZIP)"}
 
 
+FILINGS = RAW / "filings"  # data/raw/filings/<cds>/<year>/ (one folder per district)
+
+
 def manifest_path(cds: CDS, period: str = "A") -> Path:
-    return RAW / "lausd_filings" / f"viewer_manifest_{cds.code}_{period}.csv"
+    return FILINGS / cds.code / f"viewer_manifest_{cds.code}_{period}.csv"
 
 
 def write_manifest(cds: CDS, years: list[str], period: str = "A") -> Path:
@@ -107,7 +110,7 @@ def write_manifest(cds: CDS, years: list[str], period: str = "A") -> Path:
 
 
 def ingest(cds: CDS, source: Path, period: str = "A") -> list[Path]:
-    """Move each year's downloaded *_ZipAll.zip from `source` into lausd_filings/<year>/ and
+    """Move each year's downloaded *_ZipAll.zip from `source` into filings/<cds>/<year>/ and
     unzip it. Only ZIPs whose exact file name is in the manifest are accepted, so a stale
     or wrong-district download can't slip in."""
     manifest = pd.read_csv(manifest_path(cds, period))
@@ -118,7 +121,7 @@ def ingest(cds: CDS, source: Path, period: str = "A") -> list[Path]:
         if not src.exists():
             print(f"  not yet downloaded: {row['fileName']}")
             continue
-        dest = RAW / "lausd_filings" / row["fullFiscalYear"]
+        dest = FILINGS / cds.code / row["fullFiscalYear"]
         dest.mkdir(parents=True, exist_ok=True)
         target = dest / row["fileName"]
         src.replace(target)

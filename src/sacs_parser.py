@@ -10,6 +10,7 @@ The decoder reproduces CDE's own state total in UserGL_Totals to the cent (state
 Parsing UserGL takes ~70s and ~4GB RAM, so each district's rows are cached as CSV.
 """
 from decimal import Decimal
+from functools import lru_cache
 from pathlib import Path
 
 import pandas as pd
@@ -85,14 +86,19 @@ def _mdb(fiscal: str) -> AccessParser:
     return db
 
 
+@lru_cache(maxsize=None)
+def _small_table(fiscal: str, name: str) -> dict:
+    """LEAs / Charters / code tables are small; parse each once per year."""
+    return _mdb(fiscal).parse_table(name)
+
+
 def fund01_charter_ada(cds: CDS, fiscal: str = "2425") -> float:
     """K-12 ADA of charter schools whose finances are reported inside this district's
     General Fund (Charters.FundUsed == 'General'). Their spending is in Fund 01 without a
     charter school code, but per the SACS readme their ADA is NOT in LEAs.K12ADA, so it
     must be added back to get a per-ADA figure that covers the same students as the spend.
     Matches Form A line C4 (Annual ADA); for LAUSD 2024-25 that's 34,895.44."""
-    db = _mdb(fiscal)
-    t = db.parse_table("Charters")
+    t = _small_table(fiscal, "Charters")
     return sum(float(t["K12ADA"][i]) for i in range(len(t["Ccode"]))
                if t["Ccode"][i][:2] == cds.county and t["Dcode"][i][:5] == cds.district
                and t["FundUsed"][i][:30].strip() == "General")
@@ -102,7 +108,7 @@ def lea(cds: CDS, fiscal: str = "2425") -> dict:
     """District name, type and ADA. `ada` (district K-12 ADA plus Fund 01 charter ADA) is the
     denominator for General Fund per-pupil spending; it equals CDE's Current Expense ADA."""
     w = widths(fiscal)
-    t = _mdb(fiscal).parse_table("LEAs")
+    t = _small_table(fiscal, "LEAs")
     for i in range(len(t["Ccode"])):
         if t["Ccode"][i][:2] == cds.county and t["Dcode"][i][:5] == cds.district:
             district_ada = float(t["K12ADA"][i])
@@ -134,7 +140,7 @@ def state_total_check(fiscal: str) -> tuple[Decimal, Decimal]:
 
 def code_titles(table: str, fiscal: str = "2425") -> dict[str, str]:
     """Code -> title from a lookup table (Fund, Resource, Goal, Function, Object)."""
-    t = _mdb(fiscal).parse_table(table)
+    t = _small_table(fiscal, table)
     return {c[:4].strip(): ttl[:250].strip() for c, ttl in zip(t["Code"], t["Title"])}
 
 
@@ -151,6 +157,15 @@ def general_ledger(cds: CDS, fiscal: str = "2425") -> pd.DataFrame:
            if c[:2] == cds.county and d[:5] == cds.district]
     if not idx:
         raise LookupError(f"{cds.code} has no UserGL rows for {fiscal}")
+    df = _ledger_frame(t, idx, fiscal)
+
+    CACHE.mkdir(parents=True, exist_ok=True)
+    df.to_csv(cache, index=False)
+    return df
+
+
+def _ledger_frame(t: dict, idx: list[int], fiscal: str) -> pd.DataFrame:
+    """UserGL rows `idx` as a DataFrame: widths cut per year, Decimal values, account split."""
     df = pd.DataFrame({
         col: [t[col][i][:w] for i in idx]
         for col, w in widths(fiscal).items() if col in t
@@ -159,10 +174,22 @@ def general_ledger(cds: CDS, fiscal: str = "2425") -> pd.DataFrame:
     acct = df["Account"]
     df["Fund"], df["Resource"], df["Projectyear"] = acct.str[:2], acct.str[2:6], acct.str[6]
     df["Goal"], df["Function"], df["Object"] = acct.str[7:11], acct.str[11:15], acct.str[15:19]
-
-    CACHE.mkdir(parents=True, exist_ok=True)
-    df.to_csv(cache, index=False)
     return df
+
+
+def extract_county(fiscal: str, county: str = "19") -> list[str]:
+    """Parse UserGL once and write the per-district cache that general_ledger() reads, for
+    every district in one county (~70s and ~4GB per year, instead of that per district).
+    Returns the 7-digit county+district codes written."""
+    t = _mdb(fiscal).parse_table("UserGL")
+    groups: dict[str, list[int]] = {}
+    for i, (c, d) in enumerate(zip(t["Ccode"], t["Dcode"])):
+        if c[:2] == county:
+            groups.setdefault(c[:2] + d[:5], []).append(i)
+    CACHE.mkdir(parents=True, exist_ok=True)
+    for cd, idx in groups.items():
+        _ledger_frame(t, idx, fiscal).to_csv(CACHE / f"usergl_{fiscal}_{cd}.csv", index=False)
+    return sorted(groups)
 
 
 def in_scope(gl: pd.DataFrame) -> pd.Series:

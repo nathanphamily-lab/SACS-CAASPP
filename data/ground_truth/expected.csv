@@ -1,0 +1,97 @@
+cds,year,measure,function,expected,source
+19646260000000,2022-23,ela_pct_met_or_exceeded,,61.26,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19646260000000,2022-23,math_pct_met_or_exceeded,,41.44,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19646260000000,2023-24,ela_pct_met_or_exceeded,,51.15,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19646260000000,2023-24,math_pct_met_or_exceeded,,35.87,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19646260000000,2024-25,ela_pct_met_or_exceeded,,46.04,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19646260000000,2024-25,fund01_charter_ada,,0.0,"Unaudited Actuals 2024-25, Form A, Annual ADA column; 19-64626-0000000_A_2024-25_F8AMCGNPE9_A.pdf"
+19646260000000,2024-25,gf_expenditure,1000 Instruction,1702237.08,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64626-0000000_A_2024-25_F8AMCGNPE9_Fund-A_01.pdf"
+19646260000000,2024-25,gf_expenditure,2000 Instruction-Related Services,267402.09,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64626-0000000_A_2024-25_F8AMCGNPE9_Fund-A_01.pdf"
+19646260000000,2024-25,gf_expenditure,3000 Pupil Services,81148.52,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64626-0000000_A_2024-25_F8AMCGNPE9_Fund-A_01.pdf"
+19646260000000,2024-25,gf_expenditure,4000 Ancillary Services,0.0,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64626-0000000_A_2024-25_F8AMCGNPE9_Fund-A_01.pdf"
+19646260000000,2024-25,gf_expenditure,5000 Community Services,0.0,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64626-0000000_A_2024-25_F8AMCGNPE9_Fund-A_01.pdf"
+19646260000000,2024-25,gf_expenditure,6000 Enterprise,0.0,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64626-0000000_A_2024-25_F8AMCGNPE9_Fund-A_01.pdf"
+19646260000000,2024-25,gf_expenditure,7000 General Administration,376551.23,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64626-0000000_A_2024-25_F8AMCGNPE9_Fund-A_01.pdf"
+19646260000000,2024-25,gf_expenditure,8000 Plant Services,240751.46,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64626-0000000_A_2024-25_F8AMCGNPE9_Fund-A_01.pdf"
+19646260000000,2024-25,gf_expenditure,9000 Other Outgo,0.0,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64626-0000000_A_2024-25_F8AMCGNPE9_Fund-A_01.pdf"
+19646260000000,2024-25,gf_expenditure,TOTAL,2668090.38,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64626-0000000_A_2024-25_F8AMCGNPE9_Fund-A_01.pdf"
+19646260000000,2024-25,k12_ada,,184.25,"Unaudited Actuals 2024-25, Form A, Annual ADA column; 19-64626-0000000_A_2024-25_F8AMCGNPE9_A.pdf"
+19646260000000,2024-25,math_pct_met_or_exceeded,,32.54,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19647330000000,2022-23,ela_pct_met_or_exceeded,,41.17,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-09-30)
+19647330000000,2022-23,fund01_charter_ada,,35465.6,"Unaudited Actuals 2022-23, Form A, Annual ADA column; 19-64733-0000000_A_2022-23_D8AD9CYTSY_A.pdf"
+19647330000000,2022-23,gf_expenditure,1000 Instruction,5101457507.75,"Unaudited Actuals 2022-23, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2022-23_D8AD9CYTSY_Fund-A_01.pdf"
+19647330000000,2022-23,gf_expenditure,2000 Instruction-Related Services,1605634797.05,"Unaudited Actuals 2022-23, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2022-23_D8AD9CYTSY_Fund-A_01.pdf"
+19647330000000,2022-23,gf_expenditure,3000 Pupil Services,885509833.92,"Unaudited Actuals 2022-23, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2022-23_D8AD9CYTSY_Fund-A_01.pdf"
+19647330000000,2022-23,gf_expenditure,4000 Ancillary Services,169765405.38,"Unaudited Actuals 2022-23, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2022-23_D8AD9CYTSY_Fund-A_01.pdf"
+19647330000000,2022-23,gf_expenditure,5000 Community Services,4323916.59,"Unaudited Actuals 2022-23, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2022-23_D8AD9CYTSY_Fund-A_01.pdf"
+19647330000000,2022-23,gf_expenditure,6000 Enterprise,-193.63,"Unaudited Actuals 2022-23, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2022-23_D8AD9CYTSY_Fund-A_01.pdf"
+19647330000000,2022-23,gf_expenditure,7000 General Administration,600959166.66,"Unaudited Actuals 2022-23, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2022-23_D8AD9CYTSY_Fund-A_01.pdf"
+19647330000000,2022-23,gf_expenditure,8000 Plant Services,1025999220.44,"Unaudited Actuals 2022-23, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2022-23_D8AD9CYTSY_Fund-A_01.pdf"
+19647330000000,2022-23,gf_expenditure,9000 Other Outgo,28684878.31,"Unaudited Actuals 2022-23, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2022-23_D8AD9CYTSY_Fund-A_01.pdf"
+19647330000000,2022-23,gf_expenditure,TOTAL,9422334532.47,"Unaudited Actuals 2022-23, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2022-23_D8AD9CYTSY_Fund-A_01.pdf"
+19647330000000,2022-23,k12_ada,,348194.24,"Unaudited Actuals 2022-23, Form A, Annual ADA column; 19-64733-0000000_A_2022-23_D8AD9CYTSY_A.pdf"
+19647330000000,2022-23,math_pct_met_or_exceeded,,30.5,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-09-30)
+19647330000000,2023-24,ela_pct_met_or_exceeded,,43.06,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-09-29)
+19647330000000,2023-24,fund01_charter_ada,,35586.68,"Unaudited Actuals 2023-24, Form A, Annual ADA column; 19-64733-0000000_A_2023-24_E8AXU2W3J4_A.pdf"
+19647330000000,2023-24,gf_expenditure,1000 Instruction,5585251302.55,"Unaudited Actuals 2023-24, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2023-24_E8AXU2W3J4_Fund-A_01.pdf"
+19647330000000,2023-24,gf_expenditure,2000 Instruction-Related Services,1689788571.28,"Unaudited Actuals 2023-24, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2023-24_E8AXU2W3J4_Fund-A_01.pdf"
+19647330000000,2023-24,gf_expenditure,3000 Pupil Services,1097236613.63,"Unaudited Actuals 2023-24, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2023-24_E8AXU2W3J4_Fund-A_01.pdf"
+19647330000000,2023-24,gf_expenditure,4000 Ancillary Services,237023952.31,"Unaudited Actuals 2023-24, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2023-24_E8AXU2W3J4_Fund-A_01.pdf"
+19647330000000,2023-24,gf_expenditure,5000 Community Services,5155808.61,"Unaudited Actuals 2023-24, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2023-24_E8AXU2W3J4_Fund-A_01.pdf"
+19647330000000,2023-24,gf_expenditure,6000 Enterprise,57833.55,"Unaudited Actuals 2023-24, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2023-24_E8AXU2W3J4_Fund-A_01.pdf"
+19647330000000,2023-24,gf_expenditure,7000 General Administration,777107131.22,"Unaudited Actuals 2023-24, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2023-24_E8AXU2W3J4_Fund-A_01.pdf"
+19647330000000,2023-24,gf_expenditure,8000 Plant Services,1115221449.33,"Unaudited Actuals 2023-24, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2023-24_E8AXU2W3J4_Fund-A_01.pdf"
+19647330000000,2023-24,gf_expenditure,9000 Other Outgo,35943206.09,"Unaudited Actuals 2023-24, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2023-24_E8AXU2W3J4_Fund-A_01.pdf"
+19647330000000,2023-24,gf_expenditure,TOTAL,10542785868.57,"Unaudited Actuals 2023-24, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2023-24_E8AXU2W3J4_Fund-A_01.pdf"
+19647330000000,2023-24,k12_ada,,345338.43,"Unaudited Actuals 2023-24, Form A, Annual ADA column; 19-64733-0000000_A_2023-24_E8AXU2W3J4_A.pdf"
+19647330000000,2023-24,math_pct_met_or_exceeded,,32.83,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-09-29)
+19647330000000,2024-25,ela_pct_met_or_exceeded,,46.46,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-09-29)
+19647330000000,2024-25,fund01_charter_ada,,34895.44,"Unaudited Actuals 2024-25, Form A, Annual ADA column; 19-64733-0000000_A_2024-25_F8ASEP6NM9_A.pdf"
+19647330000000,2024-25,gf_expenditure,1000 Instruction,5663179266.02,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2024-25_F8ASEP6NM9_Fund-A_01.pdf"
+19647330000000,2024-25,gf_expenditure,2000 Instruction-Related Services,1797858834.28,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2024-25_F8ASEP6NM9_Fund-A_01.pdf"
+19647330000000,2024-25,gf_expenditure,3000 Pupil Services,1409222709.63,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2024-25_F8ASEP6NM9_Fund-A_01.pdf"
+19647330000000,2024-25,gf_expenditure,4000 Ancillary Services,261630761.86,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2024-25_F8ASEP6NM9_Fund-A_01.pdf"
+19647330000000,2024-25,gf_expenditure,5000 Community Services,6045925.07,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2024-25_F8ASEP6NM9_Fund-A_01.pdf"
+19647330000000,2024-25,gf_expenditure,6000 Enterprise,0.0,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2024-25_F8ASEP6NM9_Fund-A_01.pdf"
+19647330000000,2024-25,gf_expenditure,7000 General Administration,768298744.16,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2024-25_F8ASEP6NM9_Fund-A_01.pdf"
+19647330000000,2024-25,gf_expenditure,8000 Plant Services,1197225860.54,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2024-25_F8ASEP6NM9_Fund-A_01.pdf"
+19647330000000,2024-25,gf_expenditure,9000 Other Outgo,41736889.49,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2024-25_F8ASEP6NM9_Fund-A_01.pdf"
+19647330000000,2024-25,gf_expenditure,TOTAL,11145198991.05,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-64733-0000000_A_2024-25_F8ASEP6NM9_Fund-A_01.pdf"
+19647330000000,2024-25,k12_ada,,336446.66,"Unaudited Actuals 2024-25, Form A, Annual ADA column; 19-64733-0000000_A_2024-25_F8ASEP6NM9_A.pdf"
+19647330000000,2024-25,math_pct_met_or_exceeded,,36.76,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-09-29)
+19651280000000,2022-23,ela_pct_met_or_exceeded,,62.14,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19651280000000,2022-23,math_pct_met_or_exceeded,,30.84,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19651280000000,2023-24,ela_pct_met_or_exceeded,,64.78,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19651280000000,2023-24,math_pct_met_or_exceeded,,36.59,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19651280000000,2024-25,ela_pct_met_or_exceeded,,64.83,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19651280000000,2024-25,fund01_charter_ada,,0.0,"Unaudited Actuals 2024-25, Form A, Annual ADA column; 19-65128-0000000_A_2024-25_F8A6J4YTYW_A.pdf"
+19651280000000,2024-25,gf_expenditure,1000 Instruction,127883694.45,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-65128-0000000_A_2024-25_F8A6J4YTYW_Fund-A_01.pdf"
+19651280000000,2024-25,gf_expenditure,2000 Instruction-Related Services,25430889.16,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-65128-0000000_A_2024-25_F8A6J4YTYW_Fund-A_01.pdf"
+19651280000000,2024-25,gf_expenditure,3000 Pupil Services,29977588.59,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-65128-0000000_A_2024-25_F8A6J4YTYW_Fund-A_01.pdf"
+19651280000000,2024-25,gf_expenditure,4000 Ancillary Services,5268473.05,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-65128-0000000_A_2024-25_F8A6J4YTYW_Fund-A_01.pdf"
+19651280000000,2024-25,gf_expenditure,5000 Community Services,231601.41,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-65128-0000000_A_2024-25_F8A6J4YTYW_Fund-A_01.pdf"
+19651280000000,2024-25,gf_expenditure,6000 Enterprise,0.0,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-65128-0000000_A_2024-25_F8A6J4YTYW_Fund-A_01.pdf"
+19651280000000,2024-25,gf_expenditure,7000 General Administration,14127688.07,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-65128-0000000_A_2024-25_F8A6J4YTYW_Fund-A_01.pdf"
+19651280000000,2024-25,gf_expenditure,8000 Plant Services,24370462.99,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-65128-0000000_A_2024-25_F8A6J4YTYW_Fund-A_01.pdf"
+19651280000000,2024-25,gf_expenditure,9000 Other Outgo,3356662.77,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-65128-0000000_A_2024-25_F8A6J4YTYW_Fund-A_01.pdf"
+19651280000000,2024-25,gf_expenditure,TOTAL,230647060.49,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-65128-0000000_A_2024-25_F8A6J4YTYW_Fund-A_01.pdf"
+19651280000000,2024-25,k12_ada,,9172.23,"Unaudited Actuals 2024-25, Form A, Annual ADA column; 19-65128-0000000_A_2024-25_F8A6J4YTYW_A.pdf"
+19651280000000,2024-25,math_pct_met_or_exceeded,,37.14,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19753410000000,2022-23,ela_pct_met_or_exceeded,,73.1,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19753410000000,2022-23,math_pct_met_or_exceeded,,67.16,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19753410000000,2023-24,ela_pct_met_or_exceeded,,73.56,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19753410000000,2023-24,math_pct_met_or_exceeded,,69.47,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19753410000000,2024-25,ela_pct_met_or_exceeded,,71.39,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
+19753410000000,2024-25,fund01_charter_ada,,0.0,"Unaudited Actuals 2024-25, Form A, Annual ADA column; 19-75341-0000000_A_2024-25_F8AN3U7YS6_A.pdf"
+19753410000000,2024-25,gf_expenditure,1000 Instruction,90446214.49,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-75341-0000000_A_2024-25_F8AN3U7YS6_Fund-A_01.pdf"
+19753410000000,2024-25,gf_expenditure,2000 Instruction-Related Services,11183361.07,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-75341-0000000_A_2024-25_F8AN3U7YS6_Fund-A_01.pdf"
+19753410000000,2024-25,gf_expenditure,3000 Pupil Services,10435753.12,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-75341-0000000_A_2024-25_F8AN3U7YS6_Fund-A_01.pdf"
+19753410000000,2024-25,gf_expenditure,4000 Ancillary Services,0.0,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-75341-0000000_A_2024-25_F8AN3U7YS6_Fund-A_01.pdf"
+19753410000000,2024-25,gf_expenditure,5000 Community Services,464833.13,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-75341-0000000_A_2024-25_F8AN3U7YS6_Fund-A_01.pdf"
+19753410000000,2024-25,gf_expenditure,6000 Enterprise,0.0,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-75341-0000000_A_2024-25_F8AN3U7YS6_Fund-A_01.pdf"
+19753410000000,2024-25,gf_expenditure,7000 General Administration,12291675.84,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-75341-0000000_A_2024-25_F8AN3U7YS6_Fund-A_01.pdf"
+19753410000000,2024-25,gf_expenditure,8000 Plant Services,11946751.23,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-75341-0000000_A_2024-25_F8AN3U7YS6_Fund-A_01.pdf"
+19753410000000,2024-25,gf_expenditure,9000 Other Outgo,964607.0,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-75341-0000000_A_2024-25_F8AN3U7YS6_Fund-A_01.pdf"
+19753410000000,2024-25,gf_expenditure,TOTAL,137733195.88,"Unaudited Actuals 2024-25, Form 01 Expenditures by Function (p. 12, col. C Total Fund); 19-75341-0000000_A_2024-25_F8AN3U7YS6_Fund-A_01.pdf"
+19753410000000,2024-25,k12_ada,,9008.41,"Unaudited Actuals 2024-25, Form A, Annual ADA column; 19-75341-0000000_A_2024-25_F8AN3U7YS6_A.pdf"
+19753410000000,2024-25,math_pct_met_or_exceeded,,67.46,caaspp-elpac.ets.org Test Results at a Glance; all students; all grades (checked 2026-10-05)
