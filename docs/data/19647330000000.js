@@ -1,7 +1,9 @@
-window.MAIA_DATA = {
+(window.MAIA_DATA = window.MAIA_DATA || {})["19647330000000"] = {
  "district": "Los Angeles Unified",
  "cds": "19647330000000",
- "generated": "2026-10-05",
+ "district_type": "Unified",
+ "verified": true,
+ "generated": "2026-10-08",
  "function_series": [
   {
    "key": "instruction",
@@ -49,7 +51,8 @@ window.MAIA_DATA = {
    },
    "ela": 41.17,
    "math": 30.5,
-   "data_status": "both"
+   "data_status": "both",
+   "flags": []
   },
   {
    "year": "2023-24",
@@ -67,7 +70,8 @@ window.MAIA_DATA = {
    },
    "ela": 43.06,
    "math": 32.83,
-   "data_status": "both"
+   "data_status": "both",
+   "flags": []
   },
   {
    "year": "2024-25",
@@ -85,7 +89,8 @@ window.MAIA_DATA = {
    },
    "ela": 46.45,
    "math": 36.76,
-   "data_status": "both"
+   "data_status": "both",
+   "flags": []
   }
  ],
  "dollars": [
